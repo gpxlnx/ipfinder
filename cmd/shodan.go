@@ -28,16 +28,27 @@ var shodanCmd = &cobra.Command{
 It supports extracting results by facet and querying cities concurrently.
 
 Examples:
- echo "sqrx.com" | go run main.go shodan
- cat subs.txt | go run main.go shodan`,
+ echo 'ssl:"sqrx.com"' | go run main.go shodan
+ echo 'hostname:"sqrx.com"' | go run main.go shodan
+ echo 'ssl.cert.subject.cn:"sqrx.com"' | go run main.go shodan
+ echo 'org:"FIDELITY NATIONAL INFORMATION SERVICES"' | go run main.go shodan
+ echo 'asn:"AS3614"' | go run main.go shodan
+ cat subs.txt | go run main.go shodan
+
+# Use this for more filters: https://www.shodan.io/search/filters
+
+Note: After this you have to run naabu to get port against these ips because this method only gives ips
+ cat ips.txt | naabu -duc -silent -passive
+ `,
 	Run: func(cmd *cobra.Command, args []string) {
 		scanner := bufio.NewScanner(os.Stdin)
 
 		for scanner.Scan() {
 			query := scanner.Text()
+			query = strings.Replace(query, " ", "+", -1)
 
 			// Step 2: Run the first query to get the total count
-			cmd := exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=ssl:%s&facet=%s", query, facetFlag))
+			cmd := exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=%s&facet=%s", query, facetFlag))
 			output, err := cmd.Output()
 			if err != nil {
 				fmt.Println("Error executing command:", err)
@@ -62,7 +73,7 @@ Examples:
 			// Step 4: Logic based on total count
 			if total < 1000 {
 				// If total is less than 1000, run the command to print the SSL details
-				cmd = exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=ssl:%s&facet=%s", query, facetFlag))
+				cmd = exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=%s&facet=%s", query, facetFlag))
 				output, err = cmd.Output()
 				if err != nil {
 					fmt.Println("Error executing command:", err)
@@ -79,7 +90,7 @@ Examples:
 				}
 			} else {
 				// If total is greater than or equal to 1000, extract cities and perform the query for each city concurrently
-				cmd = exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=ssl:%s&facet=city", query))
+				cmd = exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=%s&facet=city", query))
 				output, err = cmd.Output()
 				if err != nil {
 					fmt.Println("Error executing command:", err)
@@ -104,7 +115,7 @@ Examples:
 						defer func() { <-semaphore }() // Release the slot in the semaphore
 
 						cityQuery := strings.Replace(city, " ", "+", -1)
-						cmd := exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=ssl:%s+city:\"%s\"&facet=%s", query, cityQuery, facetFlag))
+						cmd := exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=%s+city:\"%s\"&facet=%s", query, cityQuery, facetFlag))
 						output, err := cmd.Output()
 						if err != nil {
 							fmt.Println("Error executing command for city", city, ":", err)
