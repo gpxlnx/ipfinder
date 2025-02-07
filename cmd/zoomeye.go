@@ -24,12 +24,12 @@ type Match struct {
 // zoomeyeCmd represents the zoomeye command
 var zoomeyeCmd = &cobra.Command{
 	Use:   "zoomeye",
-	Short: "Fetch IP history for a domain (Website not supports subdomains)",
+	Short: "Fetch IP history for a domain",
 	Long: `Fetch the IP history for one or multiple domains using zoomeye.hk.
 
 Examples:
- echo "sqrx.com" | go run main.go zoomeye
- cat subs.txt | go run main.go zoomeye`,
+ echo "sqrx.com" | ipfinder zoomeye
+ cat subs.txt | ipfinder zoomeye`,
 	Run: func(cmd *cobra.Command, args []string) {
 		scanner := bufio.NewScanner(os.Stdin)
 

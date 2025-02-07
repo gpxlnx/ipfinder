@@ -60,9 +60,9 @@ var viewdnsCmd = &cobra.Command{
 	Long: `Fetch the IP history for one or multiple domains using viewdns.info.
 
 Examples:
- echo "sqrx.com" | go run main.go viewdns
- echo "public.sqrx.com" | go run main.go viewdns (Wrong input)
- cat subs.txt | go run main.go viewdns
+ echo "sqrx.com" | ipfinder viewdns
+ echo "public.sqrx.com" | ipfinder viewdns (Wrong input)
+ cat subs.txt | ipfinder viewdns
  `,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Read from stdin

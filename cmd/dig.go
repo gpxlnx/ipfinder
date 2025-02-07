@@ -17,8 +17,8 @@ var digCmd = &cobra.Command{
 	Long:  `This command uses the 'dig' utility to query DNS A records for a given domain.
 
 Examples:
- echo "sqrx.com" | go run main.go dig
- cat subs.txt | go run main.go dig`,
+ echo "sqrx.com" | ipfinder dig
+ cat subs.txt | ipfinder dig`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Create a scanner to read from stdin
 		scanner := bufio.NewScanner(os.Stdin)

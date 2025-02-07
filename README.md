@@ -25,6 +25,7 @@ cd ipfinder; go install
 ## Usage
 ```
 Usage:
+  ipfinder [flags]
   ipfinder [command]
 
 Available Commands:
@@ -33,15 +34,10 @@ Available Commands:
   help        Help about any command
   shodan      Search for SSL details on Shodan (Website supports subdomains but recommended to use domain)
   viewdns     Fetch IP history for a domain (Website not supports subdomains)
-  zoomeye     Fetch IP history for a domain (Website not supports subdomains)
+  zoomeye     Fetch IP history for a domain
 
 Flags:
-  -h, --help     help for ipfinder
-  -t, --toggle   Help message for toggle
-```
-
-## TODO
-```
-add asn:AS51602 and org:"Dell Inc." features user can use like this
-echo "asn:AS51602" | go run main.go shodan
+  -h, --help      help for ipfinder
+  -s, --silent    Suppress banner output
+  -v, --version   Print the version of the tool and exit.
 ```

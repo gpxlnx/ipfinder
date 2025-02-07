@@ -28,12 +28,12 @@ var shodanCmd = &cobra.Command{
 It supports extracting results by facet and querying cities concurrently.
 
 Examples:
- echo 'ssl:"sqrx.com"' | go run main.go shodan
- echo 'hostname:"sqrx.com"' | go run main.go shodan
- echo 'ssl.cert.subject.cn:"sqrx.com"' | go run main.go shodan
- echo 'org:"FIDELITY NATIONAL INFORMATION SERVICES"' | go run main.go shodan
- echo 'asn:"AS3614"' | go run main.go shodan
- cat subs.txt | go run main.go shodan
+ echo 'ssl:"sqrx.com"' | ipfinder shodan
+ echo 'hostname:"sqrx.com"' | ipfinder shodan
+ echo 'ssl.cert.subject.cn:"sqrx.com"' | ipfinder shodan
+ echo 'org:"FIDELITY NATIONAL INFORMATION SERVICES"' | ipfinder shodan
+ echo 'asn:"AS3614"' | ipfinder shodan
+ cat subs.txt | ipfinder shodan
 
 # Use this for more filters: https://www.shodan.io/search/filters
 
