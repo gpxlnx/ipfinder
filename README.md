@@ -41,3 +41,13 @@ Flags:
   -s, --silent    Suppress banner output
   -v, --version   Print the version of the tool and exit.
 ```
+
+## Usage Examples
+```
+echo 'ip:"173.0.84.0/24"' | ipfinder shodan --silent
+echo 'ssl:"$TARGET"' | ipfinder shodan --silent
+echo 'hostname:"$TARGET"' | ipfinder shodan --silent
+echo 'ssl.cert.subject.cn:"$TARGET"' | ipfinder shodan --silent
+echo 'org:"FIDELITY NATIONAL INFORMATION SERVICES"' | ipfinder shodan --silent
+echo 'asn:"AS3614"' | ipfinder shodan --silent
+```
