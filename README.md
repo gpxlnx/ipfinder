@@ -9,9 +9,9 @@ go install github.com/rix4uni/ipfinder@latest
 
 ## Download prebuilt binaries
 ```
-wget https://github.com/rix4uni/ipfinder/releases/download/v0.0.1/ipfinder-linux-amd64-0.0.1.tgz
-tar -xvzf ipfinder-linux-amd64-0.0.1.tgz
-rm -rf ipfinder-linux-amd64-0.0.1.tgz
+wget https://github.com/rix4uni/ipfinder/releases/download/v0.0.2/ipfinder-linux-amd64-0.0.2.tgz
+tar -xvzf ipfinder-linux-amd64-0.0.2.tgz
+rm -rf ipfinder-linux-amd64-0.0.2.tgz
 mv ipfinder ~/go/bin/ipfinder
 ```
 Or download [binary release](https://github.com/rix4uni/ipfinder/releases) for your platform.
@@ -50,4 +50,17 @@ echo 'hostname:"$TARGET"' | ipfinder shodan --silent
 echo 'ssl.cert.subject.cn:"$TARGET"' | ipfinder shodan --silent
 echo 'org:"FIDELITY NATIONAL INFORMATION SERVICES"' | ipfinder shodan --silent
 echo 'asn:"AS3614"' | ipfinder shodan --silent
+```
+
+## Usage Examples Output
+```
+echo 'ssl:"dell.com"' | ipfinder shodan --silent
+# Output:
+192.168.1.1
+192.168.1.2
+
+echo 'ssl:"dell.com"' | ipfinder shodan --silent --source
+# Output:
+ssl:"dell.com"::192.168.1.1
+ssl:"dell.com"::192.168.1.2
 ```

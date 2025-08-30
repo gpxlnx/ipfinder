@@ -18,6 +18,7 @@ var (
 	facetFlag      string
 	concurrentFlag int
 	delayFlag      int
+	sourceFlag     bool
 )
 
 // shodanCmd represents the shodan command
@@ -44,8 +45,8 @@ Note: After this you have to run naabu to get port against these ips because thi
 		scanner := bufio.NewScanner(os.Stdin)
 
 		for scanner.Scan() {
-			query := scanner.Text()
-			query = strings.Replace(query, " ", "+", -1)
+			rawQuery := scanner.Text()                             // keep the original
+			query := strings.Replace(rawQuery, " ", "+", -1)       // used for URL encoding
 
 			// Step 2: Run the first query to get the total count
 			cmd := exec.Command("curl", "-s", fmt.Sprintf("https://www.shodan.io/search/facet?query=%s&facet=%s", query, facetFlag))
@@ -86,7 +87,11 @@ Note: After this you have to run naabu to get port against these ips because thi
 
 				// Output the results
 				for _, match := range matches {
-					fmt.Println(match[1])
+					if sourceFlag {
+						fmt.Printf("%s::%s\n", rawQuery, match[1])
+					} else {
+						fmt.Println(match[1])
+					}
 				}
 			} else {
 				// If total is greater than or equal to 1000, extract cities and perform the query for each city concurrently
@@ -144,7 +149,11 @@ Note: After this you have to run naabu to get port against these ips because thi
 
 				// Output the results
 				for _, result := range extractedResults {
-					fmt.Println(result)
+					if sourceFlag {
+						fmt.Printf("%s::%s\n", rawQuery, result)
+					} else {
+						fmt.Println(result)
+					}
 				}
 			}
 		}
@@ -162,4 +171,5 @@ func init() {
 	shodanCmd.Flags().StringVarP(&facetFlag, "facet", "f", "ip", "Facet type (e.g., ip, domain, etc.)")
 	shodanCmd.Flags().IntVarP(&concurrentFlag, "concurrent", "c", 1, "Number of concurrent city queries")
 	shodanCmd.Flags().IntVarP(&delayFlag, "delay", "d", 0, "Delay between batches of city queries in milliseconds")
+	shodanCmd.Flags().BoolVar(&sourceFlag, "source", false, "Include the source query in the output")
 }
